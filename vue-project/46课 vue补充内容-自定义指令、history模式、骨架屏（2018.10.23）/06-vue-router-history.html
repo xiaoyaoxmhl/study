@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <a class="router-link" href="/">home</a>
+    <a class="router-link" href="/about">about</a>
+    <div id="router-view">
+
+    </div>
+    <script>
+        var routerView = document.getElementById('router-view');
+        var a_s = document.querySelectorAll('a');
+
+        function changeContent(href) {
+            switch (href) {
+                case '/':
+                    routerView.innerHTML = '首页'
+                    break;
+                case '/about':
+                    routerView.innerHTML = '关于我'
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        changeContent(location.pathname)
+
+
+        for (let i = 0; i < a_s.length; i++) {
+            const element = a_s[i];
+            element.addEventListener('click',function(e) {
+                e.preventDefault();
+
+                
+                var href = e.target.getAttribute('href');
+                // 变更地址栏
+                history.pushState({}, '', href)
+                changeContent(href);
+                
+                /*
+                // 匹配 
+                switch (href) {
+                    case '/':
+                        routerView.innerHTML = '首页'
+                        break;
+                    case '/about':
+                        routerView.innerHTML = '关于我'
+                        break;
+                
+                    default:
+                        break;
+                }
+                */
+                
+
+            })
+            
+        }
+        
+    
+    </script>
+    
+    
+</body>
+</html>
