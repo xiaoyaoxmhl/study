@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="app">
+		<!-- vue的模板语法 {{}} 双大括号插值   react {} -->
+		<h2>{{ msg }}</h2>
+		<h3>{{1+1}}</h3>
+		<h4>{{ isTrue }}</h4>
+		<h1>{{ str.split('').reverse().join('')}}</h1>
+		<h2>{{ 1>2 ? '真的' : '假的'}}</h2>
+		<h3>{{ {name:'张三'} }}</h3>
+	</div>
+	<!-- 1.引包 -->
+	<script type="text/javascript" src="./node_modules/vue/dist/vue.js"></script>
+
+	
+	<script type="text/javascript">
+
+
+		
+		// 2.创建实例化对象 
+
+		// 数据发生改变时，视图 发生改变，简言之，数据驱动视图
+		var data ={
+				// 数据属性
+				// 既可以是一个对象 也可以是一个函数
+				msg:'黄瓜77777777',
+				isTrue: 1==1,
+				str:'hello Vue'
+		}
+
+		//  如果template中 定义了内容 那么优先加载template，如果没有定义内容那么加载的是#app的模板
+		var vm = new Vue({
+			el:'#app',//目的地
+			data:data,
+			template:``
+
+		});
+		console.log(vm);
+		console.log(vm.$el === document.getElementById('app'));
+		console.log(vm.$data===data);
+
+		// 除了数据属性 vue实例还暴露了一些有用的实例属性和方法 。他们都有前缀$
+	</script>
+	
+</body>
+</html>

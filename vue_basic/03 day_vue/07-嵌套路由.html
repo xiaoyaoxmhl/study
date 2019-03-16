@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="app"></div>
+	<!-- 1.引入vue的模块 -->
+	<script type="text/javascript" src="vue.js"></script>
+	<!-- 2.引入vue-router模块 -->
+	<script type="text/javascript" src="./node_modules/vue-router/dist/vue-router.js"></script>
+
+	<script type="text/javascript">
+
+
+		// 地址栏上  路由范式
+
+		// （1） xxxx.html#/user/1  params 动态路由参数
+		//  （2） oooo.html#/user?userId=1   query
+
+		// 3.让Vue 使用该VueRouter 创建
+		// Vue.use(VueRouter);
+
+
+		var Song = {
+			template:`<div>
+				我是音乐
+			</div>`
+		};
+		var Movie = {
+			template:`<div>
+				我是电影
+			</div>`
+		};
+		var Home = {
+			template:`
+				<div>
+					首页内容
+					<br />
+					<router-link to = '/home/song'>歌曲</router-link>
+					<router-link to = '/home/movie'>电影</router-link>
+					
+					<router-view></router-view>
+
+				</div>
+			`
+		};
+
+		
+		// 4.创建router对象
+
+
+		var router = new VueRouter({
+			// 5.配置路由对象
+			routes:[
+				// 路由匹配的规则
+				{	
+					// 动态路由参数  以冒号开头  params
+					path:"/home",
+					name:'home',
+					component:Home,
+					children:[
+						{
+							path:'song',
+							component:Song
+						},
+						{
+							path:'movie',
+							component:Movie
+						},
+					]
+
+				}
+
+			]
+		});
+		// 引入vue-router模块  给咱们抛出来两个全局的组件  router-link ==>a   to ==>href    router-view===>路由匹配组件的出口
+		var App = {
+			template:`
+				<div>
+					<router-link :to="{name:'home'}">首页</router-link>
+					
+					<router-view></router-view>
+
+				</div>
+				
+
+				
+			`
+		}
+
+		new Vue({
+			el:"#app",
+			data(){
+				return {
+
+				}
+			},
+			components:{
+				App
+			},
+			// 6.交给vue实例化对象管理
+			router,
+			template:`<App />`
+		});
+
+
+	</script>
+	
+</body>
+</html>

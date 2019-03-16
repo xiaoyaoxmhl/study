@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/javascript" src="./node_modules/vue/dist/vue.min.js"></script>
+	<script type="text/javascript">
+
+		// 局部组件的使用打油诗 ： 声子 挂子 用子
+
+		// 局部入口组件的声明
+		var AppName = {
+			data(){
+				return {
+
+				}
+			},
+			methods:{
+				clickHanlder(){
+					console.log(this);
+				}
+			},
+			template:`
+				<div>
+					我是一个入口组件
+					<button @click = 'clickHanlder'>按钮</button>
+				</div>
+			`
+		};
+		console.log(AppName);
+		
+		var vm =new Vue({
+			el:"#app",
+			data(){
+				return {
+
+				}
+			},
+			// 挂载子组件
+			components:{
+				AppName
+			},
+			// 父组件直接可以使用
+			template:`
+				<app-name></app-name>	
+			`
+		});
+		console.log(vm);
+	</script>
+	
+</body>
+</html>

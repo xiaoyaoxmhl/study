@@ -1,0 +1,15 @@
+{
+  "name": "01_module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build" : "webpack ./main.js ./build.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^3.12.0"
+  }
+}

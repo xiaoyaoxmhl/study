@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+    .default {
+        display: inline-block;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #dcdfe6;
+        border-color: #dcdfe6;
+        color: #606266;
+        -webkit-appearance: none;
+        text-align: center;
+        box-sizing: border-box;
+        outline: none;
+        margin: 0;
+        transition: .1s;
+        font-weight: 500;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 4px;
+    }
+
+    .primary {
+        color: #fff;
+        background-color: #409eff;
+        border-color: #409eff;
+    }
+
+    .success {
+        color: #fff;
+         background-color: green;
+        border-color: #409eff;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+    </div>
+    <script type="text/javascript" src="./vue.min.js"></script>
+    <script type="text/javascript">
+    // 全局组件
+    // 第一个参数是组件的名字 第一个参数是options
+    Vue.component('Vbtn', {
+    	data(){
+    		return {
+    			myType:''
+    		}
+    	},
+    	created(){
+    		this.myType = this.type;
+    		console.log(this.myType);
+    	},
+        template: `
+				<!--插槽  内置组件 slot  做为承载分发内容的出口-->
+				<button class = 'default' :class = 'type'>
+					<slot>
+					      按钮
+					</slot>
+				</button>
+				
+				
+			`,
+			props:['type']
+    });
+
+    var Vcontent = {
+        template: `
+
+				<div>
+					我是内容组件
+					<Vbtn type = 'primary'>主要按钮</Vbtn>
+					<Vbtn type = 'success'>成功按钮</Vbtn>
+					
+				</div>
+			`
+    };
+
+
+    var Vaside = {
+        template: `
+
+				<div>
+					我是侧边栏组件
+				
+					
+				</div>
+			`
+    };
+
+    var Vheader = {
+        data() {
+            return {
+
+            }
+        },
+        template: `
+
+				<div>
+					我是头部组件
+					
+				</div>
+			`,
+        methods: {
+
+        }
+    };
+
+    // 1.声子
+    var App = {
+        template: `
+				<div>
+					<Vheader />
+					<div>
+						<Vaside />
+						<Vcontent />
+					</div>
+
+				</div>
+			`,
+        components: {
+            Vheader,
+            Vaside,
+            Vcontent
+        }
+    };
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+
+            }
+        },
+        components: {
+            // 2.挂子
+            App
+        },
+        // 3.用子
+        template: `<App />`
+    });
+    </script>
+</body>
+
+</html>

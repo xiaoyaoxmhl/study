@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id = 'app'></div>
+	<script type="text/javascript" src="./vue.min.js"></script>
+	<script type="text/javascript">
+		// 过滤器的作用：为页面中数据进行添油加醋的功能
+
+		// 有两种 ： 局部过滤器   全局过滤器
+
+		/*
+		// 1.声明过滤器
+		    2. {{ 数据 | 过滤器的名字 }}
+		*/
+		// 全局过滤器
+		Vue.filter('myReverse',function(value,arg){
+			return arg+ "  "+ value.split('').reverse().join('');
+		});
+		
+		var App = {
+			data(){
+				return {
+					price:0,
+					msg:'hello filter'
+				}
+			},
+			template:`
+				<div>
+					<input type="number" v-model = 'price' />
+					<h3>{{price | myCurrentcy}}</h3>
+					<h4>{{msg | myReverse('哈哈哈')}}</h4>
+				</div>
+			`,
+			filters:{
+				// 1.声明过滤器
+				myCurrentcy:function(value){
+					return "¥" + value
+				}
+			}
+		};
+		new Vue({
+
+			el:"#app",
+			components:{
+				App
+			},
+			template:`<App />`
+		});
+	</script>
+	
+</body>
+</html>

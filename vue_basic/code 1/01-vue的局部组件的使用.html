@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="app">
+		
+	</div>
+	<script type="text/javascript" src="./vue.min.js"></script>
+	<script type="text/javascript">
+		// 全局组件
+		// 第一个参数是组件的名字 第一个参数是options
+		Vue.component('Vbtn',{
+			template:`
+
+				<button>按钮</button>
+			`
+		});
+
+		var Vcontent = {
+			template:`
+
+				<div>
+					我是内容组件
+					<Vbtn />
+					<Vbtn />
+					<Vbtn />
+				</div>
+			`
+		};
+
+
+		var Vaside = {
+			template:`
+
+				<div>
+					我是侧边栏组件
+					<Vbtn />
+					
+				</div>
+			`
+		};
+
+		var Vheader = {
+			data(){
+				return {
+
+				}
+			},
+			template:`
+
+				<div>
+					我是头部组件
+					
+				</div>
+			`,
+			methods:{
+
+			}
+		};
+
+		// 1.声子
+		var App = {
+			template:`
+				<div>
+					<Vheader />
+					<div>
+						<Vaside />
+						<Vcontent />
+					</div>
+
+				</div>
+			`,
+			components:{
+				Vheader,
+				Vaside,
+				Vcontent
+			}
+		};
+		
+		new  Vue({
+			el:'#app',
+			data(){
+				return {
+
+				}
+			},
+			components:{
+				// 2.挂子
+				App
+			},
+			// 3.用子
+			template:`<App />`
+		});
+	</script>
+	
+</body>
+</html>

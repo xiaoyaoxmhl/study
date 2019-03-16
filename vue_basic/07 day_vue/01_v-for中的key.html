@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		
+		.userList{
+			border: 1px solid red;
+			margin: 20px 0;
+			padding: 10px 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/javascript" src="vue.js"></script>
+	<script src="lodash.min.js"></script>
+	<script type="text/javascript">
+		Vue.component('my-com',{
+			template:`
+				 <div class = 'userList'>
+				 	<div class = 'content'>
+						<h3>{{obj.name}}</h3>
+						<p>{{obj.content}}</p>
+				 	</div>
+				 	<div class ='control'>
+						<input type="text" placeholder = '请输入你的名字' />
+				 	</div>
+
+				</div>
+			`,
+			props:{
+				obj:Object
+			}
+		})
+		
+		// 总结一句话： 当给组件使用v-for遍历的时候，一定要加上:key属性 ，避免让vue帮咱们去计算DOM
+		var App = {
+			data(){
+				return {
+					datas:[
+						{id:1,name:'张三',content:'我是张三'},
+						{id:2,name:'李四',content:'我是李四'},
+						{id:3,name:'王五',content:'我是王五'}
+					]
+				}
+			},
+			template:`
+				<div>	
+					<button @click = 'change'>改变顺序</button>
+					
+					<my-com v-for = '(item,index) in datas' :obj = 'item' :key = 'item.id'></my-com>
+
+				</div>
+			`,
+			methods:{
+				change(){
+					console.log(1);
+					this.datas = _.shuffle(this.datas);
+				}
+			}
+		};
+
+		new Vue({
+			el:'#app',
+			components:{
+				App
+			},
+			template:`<App />`
+		});
+	</script>
+	
+</body>
+</html>

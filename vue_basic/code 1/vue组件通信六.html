@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<div id="app"></div>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script type="text/javascript">
+    	/*
+	父组件中通过provider来提供变量，然后在子组件中通过inject来注入变量。不论子组件有多深，只要调用了inject那么就可以注入provider中的数据。而不是局限于只能从当前父组件的prop属性来获取数据，只要在父组件的生命周期内，子组件都可以调用。
+
+    	*/
+
+    	Vue.component('Child',{
+    		data(){
+    			return {
+    				msg:''
+    			}
+    		},
+                  props:{
+                    value:String, //v-model会自动传递一个字段为value的prop属性
+                 },
+                  methods:{
+                    changeValue(){
+                        alert(1);
+                        this.$emit('input',this.value);////通过如此调用可以改变父组件上v-model绑定的值
+                    }
+                  },
+    		template:`
+			<div>
+                                <input type="text" v-model = 'value'  @change = 'changeValue'/>
+                            </div>
+    		`
+    	});
+
+    	Vue.component('Parent',{
+                  data(){
+                    return {
+                        msg:'我是父组件的数据'
+                    }
+                  },
+    		template:`
+			<div>
+				<p>我是父亲</p>
+				<Child v-model ='msg' @input = 'input'/>
+			</div>
+			
+    		`,
+                methods:{
+                    input(val){
+                        console.log(val);
+                    }
+                }
+    		
+    	});
+    	var App = {
+    		data(){
+    			return {
+
+    			}
+    		},
+    		template:`
+			<div>
+				<h2>我是入口组件</h2>
+				<Parent />
+			</div>
+    		`
+    	}
+
+    	new Vue({
+    		el:"#app",
+    		template:`<App />`,
+    		data(){
+    			return {
+
+    			}
+    		},
+    		components:{
+    			App
+    		}
+    	});
+    </script>
+	
+</body>
+</html>
