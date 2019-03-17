@@ -1,0 +1,7 @@
+restful:
+	获取:get
+	新增:post
+	更新: 
+		整体:put
+		局部:patch
+	删除:delete
