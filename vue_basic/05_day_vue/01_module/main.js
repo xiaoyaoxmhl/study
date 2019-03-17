@@ -1,6 +1,6 @@
 
 // esModule的模块导入
-import Vue from './vue.js'
+// import Vue from './vue.js'
 
 
 
@@ -12,10 +12,11 @@ console.log(num1);
 console.log(num2);
 add(3,5);
 
+/*
 new Vue({
 	el:'#app',
 	components:{
 		App
 	},
 	template:`<App />`
-});
+});*/
