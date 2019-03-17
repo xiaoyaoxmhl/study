@@ -1,0 +1,244 @@
+
+
+<!-- 继承,并填坑 -->
+{{extend './layout/main.html' }}
+
+{{block 'content'}}
+    <style type="text/css">
+    #pwd-level div {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        float: left;
+    }
+    
+    #pwd-level span {
+        display: inline-block;
+        float: left;
+    }
+    </style>
+ 
+    <link href="/public/css/register.css" rel="stylesheet" type="text/css" />
+   
+    <div class="aw-register-box">
+        <div class="mod-head">
+            <a href="/"></a>
+            <h1>注册新用户</h1>
+        </div>
+        <div class="mod-body">
+            <form action="" class="aw-register-form" method="post" id="register_form">
+                <ul>
+                    <li class="alert alert-danger hide error_message text-left">
+                        <i class="icon icon-delete"></i> <em></em>
+                    </li>
+                    <li>
+                        <input class="aw-register-name form-control" type="text" name="username" placeholder="用户名" id="username" value="" />
+                    </li>
+                    <li>
+                        <input class="aw-register-email form-control" type="text" placeholder="邮箱" name="email" value="" />
+                    </li>
+                    <li>
+                        <input class="aw-register-pwd form-control" type="text" name="password" placeholder="密码" id="password" />
+                    </li>
+                    <div id='pwd-level'>
+                        <span>密码强度:</span>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <hr/>
+                    <li class="aw-register-verify">
+                        <img class="pull-right" width="120" src="/user/get-pic" onclick="this.src='/user/get-pic?'+ Date.now()  ">
+                        <input type="text" class="form-control" name="vcode" placeholder="验证码" />
+                    </li>
+                    <li class="last">
+                        <label>
+                            <input type="checkbox" checked="checked" value="agree" /> 我同意</label> <a href="javascript:;" class="aw-agreement-btn">用户协议</a>
+                        <a href="/login" class="pull-right">已有账号?</a>
+                        <div class="aw-regiter-agreement hide">
+                            <div class="aw-register-agreement-txt" id="register_agreement"></div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <button type="submit" class="btn btn-large btn-blue btn-block">
+                            注册
+                        </button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 注册页面的js代码 -->
+    <script type="text/javascript">
+        // 基本全局节流函数
+        // var timer;
+        // var username;
+
+        // // 给用户名输入框来个keyup事件
+        // $('#username').on('keyup',function (e) {
+
+        //     // 干掉前面一次请求,  干掉上一个未执行的定时器
+        //     clearTimeout(timer); // 第一次执行Undefined没有关系
+           
+        //     // 清空了上一个请求后,判断一下,当前的用户名是否还是同一个
+        //     if (username === $('#username').val() ) {
+        //         // 不发请求 return
+        //         return;
+        //     }
+        //     timer = setTimeout(function () {
+                
+        //         // 向后台发起请求,询问是否有该用户名
+        //         $.ajax({
+        //             url:'/user/check-username',
+        //             type:'post',
+        //             // 可以是key=val, 也可以是{key:value }
+        //             // content-type头不一样
+        //             // 默认的是key=val的content-type
+        //             // 要对象的话就是 content-type: application/json
+        //             data:'username=' + $('#username').val(),
+        //             dataType:'json',
+        //             success:function (data) {
+
+        //                 // 保存本次输入的用户名
+        //                 username = $('#username').val();
+
+
+        //                 if (data.code === '001') {
+        //                     alert(data.msg);
+        //                 } else {
+        //                     alert(data.msg);
+        //                 }
+        //             }
+
+        //         });
+        //     },500);
+        // });
+
+// 自执行函数,避免全局变量
+        (function () {
+
+        function sendAjax () {
+            var timer;
+            var username;
+            return function (e) {
+
+                clearTimeout(timer); 
+
+                if (username === $('#username').val() ) {
+                    // 不发请求 return
+                    return;
+                }
+                timer = setTimeout(function () {
+                    $.ajax({
+                        url:'/user/check-username',
+                        type:'post',
+                        data:'username=' + $('#username').val(),
+                        dataType:'json',
+                        success:function (data) {
+
+                            // 保存本次输入的用户名
+                            username = $('#username').val();
+
+                            alert(data.msg);
+                        
+                        }
+
+                    });
+                },500);
+            }
+        }
+
+
+        // 给用户名输入框来个keyup事件
+        $('#username').on('keyup',sendAjax() );
+
+        })(window);
+
+
+        // 密码强度处理函数
+        function checkPwdLevel (str) {
+            var tmpLevel = 0;
+
+            // 三次判断         
+            var reg1 = /\w/; //1: 判断是否包含字母
+            var reg2 = /\d/; //2:数字.
+            var reg3 = /\W/; //3:特殊符号
+
+            if(reg1.test(str)) tmpLevel++;
+            if(reg2.test(str)) tmpLevel++;
+            if(reg3.test(str)) tmpLevel++;
+            return tmpLevel;
+        }
+
+
+
+        // 密码强度
+        $('#password').on('keyup',function (e) {
+
+            // 控制密码长度
+            if(e.target.value.length >= 16 ) {
+                var xx  = e.target.value.substring(0,16);
+                e.target.value = xx;
+                return;
+            }
+
+            // 获取密码强度元素
+            var divs = $('#pwd-level').find('div'); 
+            // 清空之前的颜色
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].style.backgroundColor = '';
+            }
+            // 获取到密码的数据
+            var password = e.target.value;
+            // 将该数据传递到函数中,帮我们来处理其究竟要亮几个密码强度灯
+            var level = checkPwdLevel(password);
+            //  0/1/2/3
+            
+            // 设置颜色顺序
+            var colors = ['yellowgreen','skyblue','hotpink'];
+
+           
+            // 原生的DOM元素
+            // 根据返回回来的level密码大小来循环
+            for (var i = 0; i < level; i++) {
+                divs[i].style.backgroundColor = colors[i];
+            }
+            
+        });
+
+
+        // 给表单提交事件,来做异步ajax请求
+        // /user/do-register
+        $('#register_form').on('submit',function(e) {
+            // 禁止默认事件
+            e.preventDefault();
+            // 获取key=value... 表单数据
+            var formData = $(this).serialize();
+
+            // ajax请求
+            $.ajax({
+                url:'/user/do-register',
+                type:'post',
+                data:formData,
+                dataType:'json',
+                success:function (data) {
+                    // 根据code做不同操作
+                    if (data.code === '001') {
+                        // 去登录
+                        if(confirm('注册成功,去登录?')) {
+                            location.href = '/user/login';
+                        }
+                    } else {
+                        // 注册不成功
+                        alert(data.msg);
+                    }
+                }
+            })
+
+        })
+
+    </script>
+
+
+{{/block}}

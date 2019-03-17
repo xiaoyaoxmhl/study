@@ -1,0 +1,199 @@
+﻿{{ extend './layout/main.html'}}
+
+{{block 'content'}}
+    <style type="text/css">
+    #box {
+        background-color: rgba(0, 0, 0, 0.2);
+        width: 300px;
+        height: 360px;
+        margin-top: 10px;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    #box p {
+        padding: 0 15px;
+    }
+
+    #lrc {
+        margin-top: 130px;
+        position: absolute;
+        text-align: center;
+        padding-top: 60px;
+    }
+
+    .gl {
+        color: white;
+        background-color: red;
+    }
+    </style>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>首页--<small>我的音乐</small></h1>
+        </div>
+        <a href="/music/add-music" class="btn btn-success">添加音乐</a>
+    </div>
+    <div class="container">
+       <div class="row" style="display: flex;">
+            <div style="flex: 3; margin-right: 10px;">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>歌曲标题</th>
+                        <th>时长</th>
+                        <th>歌手</th>
+                        <th>编辑</th>
+                        <th>删除</th>
+                        <th>播放</th>
+                    </thead>
+                    <tbody class="list_container" id="list_container">
+                       {{each musics}}
+                         <tr>
+                            <td>{{$value.title}}</td>
+                            <td>{{$value.singer}}</td>
+                            <td>{{$value.time}}</td>
+                            <td><a href="">编辑</a></td>
+                            <td><a class="del" href="">删除</a></td>
+                            <td><span style="cursor:pointer" 
+                            file="{{$value.file}}" 
+                            filelrc="{{$value.filelrc}}"
+                            src="" class="glyphicon glyphicon-play-circle ply"></span></td>
+                        </tr>
+                       {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 2">
+                <p>正在播放音乐:</p>
+                <audio id="audio" autoplay src="" controls="controls">
+                </audio>
+                <div id="box" class="col-md-3">
+                    <div id="lrc">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+<script type="text/javascript">
+    /*
+    1:获取歌词
+    2:转换成对象
+    3:生成DOM
+    4:找到当前播放的p
+    5:计算p与歌词盒子的高度差
+    6:歌词盒子滚起来
+     */
+
+   // 转换对象
+   function parseText (str) {
+        var obj = {};
+        // [00:23.65]塞纳河畔 左岸的咖啡
+        // [00:23.65]你手一杯 我看得好累
+        // 正则: /\[(\d{2})\:(\d{2})\.(\d{2})\](.*)/
+    
+        var lines = str.split('\n');
+        var regex = /\[(\d{2})\:(\d{2})\.(\d{2})\](.*)/;
+        // 循环
+        for(var i=0;i<lines.length;i++) {
+            var line = lines[i];
+
+            var result = regex.exec(line);
+            // 万一不匹配.result就是null
+            if (!result) continue;
+
+            var fen = result[1];
+            var miao = result[2];
+            // 不要毫秒了.当然也可以取毫秒做四舍五入到秒
+            var content = result[4];
+            var time = (fen * 60) + (miao - 0);
+            obj[time] = content;
+
+        }
+
+        return obj
+   }
+
+   // 生成DOM
+   function createDOM (obj) {
+        var $lrc = $('#lrc');
+        var htmlText = '';
+
+        // 遍历对象
+        for (var time in obj) {
+            htmlText += '<p time="'+time+'">' + obj[time] + '</p>'
+        }
+
+        // 生成DOM
+        $lrc.html(htmlText);
+   }
+
+   // scroll 滚动
+   function scroll (obj) {
+        // 获取播放的事件
+        $('#audio').on('timeupdate',function(e) {
+         // 获取当前播放时间,需要用原生DOM对象的currentTime属性
+            var currentTime = parseInt(e.target.currentTime);
+            // 获取来的是秒
+            // console.log(currentTime);
+
+            // 查找当前的一堆p中是否有这个元素
+            // 别去DOM找了,对比对象是否有这个key就行了
+            if (!obj[currentTime]) return;
+
+            // 一定有这句歌
+            var p = $('#lrc').find('p[time=' + currentTime + ']');
+
+            // 获取p标签的top
+            // console.log(p.offset().top);
+            // 求歌词盒子与p的top差
+            var minus = $('#lrc').offset().top - p.offset().top;
+
+            // 移动lrc盒子
+            $('#lrc').animate({
+                top:minus
+            },'slow');
+
+            // 歌词设置高亮
+            p.addClass('gl').siblings().removeClass('gl');
+
+           
+
+
+        });
+
+
+   }
+
+   $('.ply').on('click', function () {
+        // 歌词,歌曲数据
+        var file = $(this).attr('file');
+        var filelrc = $(this).attr('filelrc');
+
+        // 获取歌词文件
+        $.ajax({
+            url:filelrc,
+            type:'get',
+            success:function (text) {
+               var obj = parseText(text);
+               
+               // 生成DOM
+               createDOM(obj);
+               scroll(obj);
+            }
+        })
+
+
+        // 播放音乐
+        $('#audio').attr('src',file);
+   });
+
+
+
+
+
+</script>
+
+
+{{/block}}

@@ -1,0 +1,34 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script type="text/javascript">
+      var num = 1;
+      var num2 = 2;
+
+      function test(...obj) {  // 可变参数
+        console.log(obj);  // 数组
+      }
+      test(num,num2)
+
+      function test2 (obj) {
+        console.log(...obj);
+      }
+      test2([1,2,3,4])
+
+
+
+      var obj3 = {a:1,b:2,c:3}
+      // 对象的行为
+      var obj2 = {
+        ...obj3
+      }
+      console.log(obj2);
+
+
+
+  </script>
+</body>
+</html>
