@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./template.js"></script>
+    <script src="./underscore-master/underscore.js"></script>
+</head>
+<body>
+<script>
+    var complied = template("hello:<%= name %>")
+    console.log(complied({name:'max'}));
+    complied({name:'remi'});
+</script>
+
+<script>
+
+    var data = [
+        {
+            name: 'mike',
+            age: 18,
+            sex: '男'
+        },
+        {
+            name: 'nina',
+            age: 20,
+            sex: '女'
+        },
+        {
+            name: 'elle',
+            age: 26,
+            sex: '女'
+        }
+    ];
+    var str = `
+        <% data.forEach(v=>{ %>
+             <p><%= v.name %></p>
+        <% })%>
+    `;
+    debugger
+
+    var complied = _.template(str,data)
+    console.log(complied());
+
+
+    debugger
+
+    var str = `
+        <% data.forEach(v=>{ %>
+             <p><%= v.name %></p>
+        <% })%>
+    `;
+    var complied = template(str,data)
+    console.log(complied());
+
+</script>
+
+
+</body>
+</html>

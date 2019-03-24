@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="underscore.js"></script>
+</head>
+<body>
+
+<script>
+    var compiled = _.template("hello: <%= name %>");
+    var result = compiled({name: 'moe'});
+    console.log(result);
+
+    var data = [
+        {
+            name: 'mike',
+            age: 18,
+            sex: '男'
+        },
+        {
+            name: 'nina',
+            age: 20,
+            sex: '女'
+        },
+        {
+            name: 'elle',
+            age: 26,
+            sex: '女'
+        }
+    ];
+</script>
+
+<script>
+    var str = `
+        <% data.forEach(v=>{ %>
+             <p><%= v.name %></p>
+        <% })%>
+    `;
+    var complied = _.template(str,data)
+    console.log(complied());
+</script>
+
+
+<script type="text/template" id="tpl">
+    <% _.each(data, function(n){ %>
+    <p>姓名：<%= n.name %>,年龄：<%= n.age %>,性别：<%= n.sex %></p>
+    <% }); %>
+</script>
+
+
+<script>
+    var complied = _.template(document.getElementById('tpl').innerHTML, data);
+    console.log(complied());
+</script>
+
+<script>
+    var str =`
+    <% _.each(data, function(n){ %>
+    <p>姓名：<%= n.name %>,年龄：<%= n.age %>,性别：<%= n.sex %></p>
+    <% }); %>
+    `;
+    var complied = _.template(str,data)
+    debugger
+    console.log(complied());
+</script>
+
+
+</body>
+</html>
