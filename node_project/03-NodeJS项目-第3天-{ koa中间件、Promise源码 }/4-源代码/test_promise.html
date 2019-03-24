@@ -1,0 +1,61 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script type="text/javascript" src="./promise.js"></script>
+    <script type="text/javascript">
+
+        // 通过promise解决该问题
+        new Promise(function(resolve,reject) {
+              console.log('我执行了');
+              setTimeout(function() {
+                console.log(1);
+                resolve();
+              },3000);
+        })
+        .then(function(data) {
+            return new Promise(function(resolve,reject) {
+                 // 1秒输出
+                setTimeout(function() {
+                    console.log(2);
+                    resolve()
+                },1000);
+            });
+        },function(err){} )
+        .then(function(data) {
+            return new Promise(function(resolve,reject) {
+                 // 1秒输出
+                setTimeout(function() {
+                    console.log(3);
+                    resolve()
+                },2000);
+            });
+        },function(err){})
+        .then(function(){
+            console.log('结束')
+        },function(err){})
+
+
+
+
+
+        // 3秒输出
+        // setTimeout(function() {
+        //     console.log(1);
+        // },3000);
+        // // 1秒输出
+        // setTimeout(function() {
+        //     console.log(2);
+        // },1000);
+        // // 2秒输出
+        // setTimeout(function() {
+        //     console.log(3);
+        // },2000);
+        // 回调函数会带来 回调函数地狱
+
+    </script>
+</body>
+</html>
