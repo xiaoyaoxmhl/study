@@ -11,7 +11,7 @@ module.exports = {
       connectionLimit: 10,
       host: 'localhost',
       user: 'root',
-      password: 'root',
+      password: '',
       database: 'node_music'
   },
   routeList:[
