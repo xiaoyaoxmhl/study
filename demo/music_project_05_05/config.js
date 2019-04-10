@@ -6,7 +6,7 @@ module.exports = {
       { regex:/^\/xx/,dist:'/user/login'},
       { src:'/',dist:'/user/login'} // 为了访问/ 有登录页看
     ],
-    port:9999,
+    port:8888,
     dbConfig: {
       connectionLimit: 10,
       host: 'localhost',

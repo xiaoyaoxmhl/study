@@ -35,7 +35,17 @@ const rewriteUrl = require('./middlewares/reWriteUrl');
 app.use(rewriteUrl(rewriteUrlList));
 
 // 处理静态资源                   // 相对变绝对
-app.use(require('koa-static')(staticDir));
+app.use(require('koa-static')(staticDir,{
+    setHeaders:function(res,path,stats) {
+        if(path.endsWith('.mp3')) {
+            let size = stats.size;
+            // 支持字节范围
+            res.setHeader('Accept-Ranges','bytes');
+            // 具体范围
+            res.setHeader('Content-Ranges','bytes 0-' + (size - 1)+ '/' + size);
+        }
+    }
+}));
 
 
 

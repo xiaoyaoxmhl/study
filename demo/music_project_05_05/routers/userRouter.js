@@ -1,7 +1,7 @@
 // 1:引入 Koa-router
 const Router = require('koa-router');
 const userController = require('../controllers/userController');
-
+const { port } = require('../config.js');
 // 2: 创建路由对象
 let router = new Router();
 
@@ -10,7 +10,9 @@ router.get('/user/register',(ctx,next)=>{
     ctx.render('register');
 })
 .get('/user/login',(ctx,next)=>{
-    ctx.render('login');
+    ctx.render('login',{
+        port
+    });
 })
 .post('/user/check-username',userController.checkUsername)
 .post('/user/do-register',userController.doRegister)
