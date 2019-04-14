@@ -1,11 +1,18 @@
 const Router = require('koa-router');
-const uploadExcelSrv = require('../service/uploadExcelSrv');
+const uploadExcelSrv = require('../controllers/uploadExcelSrv');
+const readerExcel = require('../controllers/readerExcel');
 
-const saveData = async function (ctx, next) {
+
+let router = new Router();
+router.get('/file', function (ctx, next) {
+    ctx.body = {msg: 'test'}
+});
+
+router.post('/file', async function (ctx, next) {
 
     const getRes = await uploadExcelSrv.getExcelObjs(ctx);
     if (getRes.status) {
-        if(getRes.datas){
+        if (getRes.datas) {
             const objs = getRes.datas;
             ctx.body = {
                 status: true,
@@ -14,12 +21,20 @@ const saveData = async function (ctx, next) {
             };
         }
     } else {
-        ctx.body = {code: getRes.msg};
+        ctx.body = {msg: getRes.msg, status: getRes.status};
     }
     await next();
-};
+});
+router.post('/fileList', async function (ctx, next) {
 
-let router = new Router();
+    let {keyword} = ctx.request.body;
 
-router.post('/file', saveData)
+    const readerXlsx = await readerExcel.readerAllExcelObjs(ctx);
+    ctx.body = {
+        status: true,
+        data: readerXlsx,
+        validStatus: ctx.validStatus
+    };
+
+})
 module.exports = router;
