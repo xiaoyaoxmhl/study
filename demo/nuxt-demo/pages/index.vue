@@ -3,8 +3,9 @@
     <div>
       <logo />
       <h1 class="title">
-        test
+        <nuxt-link to="/login">登录</nuxt-link>
       </h1>
+
       <h2 class="subtitle">
         My riveting Nuxt.js project
       </h2>
