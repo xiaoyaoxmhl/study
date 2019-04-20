@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<form action="/file" method="post" id="form">
+    <label for="file"></label>
+    <input type="file" name="file">
+    <button type="submit" class="btn btn-success">点击添加</button>
+</form>
+
+<script type="text/javascript">
+    // 由于$.serialize() 函数对文件的input 获取的是路径文件名
+    // 一个个的来处理
+    var form = document.getElementById('form');
+    form.addEventListener('submit',function(e) {
+        e.preventDefault();
+
+        // 上传文件 有flash方式/formData(H5)
+        var fd = new FormData();
+
+        // 获取多个input元素
+        var inputs = document.querySelectorAll('input');
+        var fileExcel = inputs[0].files[0];
+
+        fd.append('file',fileExcel);
+
+        // 在jq中ajax上传文件，默认content-type:application/x-www-form-urlencoded
+        // 数据是以键值对的方式
+
+        // 上传文件
+        $.ajax({
+            // 不需要其帮我设置该默认头=> enctype:"multipart/formdata"
+            contentType:false,
+            // 不需要转换请求体数据成键值对
+            processData:false,
+            type:'post',
+            url:'/file',
+            data:fd,
+            success:function(res) {
+                if(res) {
+                    debugger
+                    console.log(res);
+                } else {
+                    alert(res.msg);
+                }
+            }
+        })
+
+
+    });
+</script>
+
+</body>
+</html>
