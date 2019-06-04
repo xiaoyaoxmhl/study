@@ -22,6 +22,6 @@ async function readerAllExcelObjs(ctx) {
     }
 }
 
-module.exports = {
+moduledeleteReport.exports = {
     readerAllExcelObjs
 };
