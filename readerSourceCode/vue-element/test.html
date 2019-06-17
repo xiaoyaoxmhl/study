@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+  "use strict";
+  var twoSum = function(nums, target) {
+    let arr = nums;
+    let arrs = new Array()
+    for(let i =  0; i < arr.length - 1; i++){
+      for(let j = 0; j < arr.length; j++){
+        if ( arr[i] + arr[j] === target) {
+          arrs.push(i, j)
+          return arrs
+        }
+      }
+    }
+
+  };
+  var a =twoSum([11, 15, 2, 7], 9)
+  console.log(a);
+</script>
+</body>
+</html>

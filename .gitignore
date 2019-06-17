@@ -24,10 +24,4 @@ yarn-error.log*
 
 .idea/workspace.xml
 
-/node_modules
-/*/node_modules
-/*/*/node_modules
-/*/*/*/node_modules
-/*/*/*/*/node_modules
-/*/*/*/*/*/node_modules
-/*/*/*/*/*/*/node_modules
+node_modules
