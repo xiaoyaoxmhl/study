@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-radio-group v-model="labelPosition" size="small">
+    <!--<el-radio-group v-model="labelPosition" size="small">
       <el-radio-button label="left">左对齐</el-radio-button>
       <el-radio-button label="right">右对齐</el-radio-button>
       <el-radio-button label="top">顶部对齐</el-radio-button>
@@ -18,7 +18,12 @@
       </el-form-item>
     </el-form>
     {{comCount1}}
-    <child-component @click="handleChildClick"></child-component>
+    <child-component @click="handleChildClick"></child-component>-->
+
+    header
+    <svg class="icon icon-fanhui" aria-hidden="true">
+      <use xlink:href="#icon-fanhui"></use>
+    </svg>
   </div>
 </template>
 
@@ -67,4 +72,10 @@
     }
   }
 </script>
+
+<style scoped>
+  .icon-fanhui{
+    background: red;
+  }
+</style>
 
