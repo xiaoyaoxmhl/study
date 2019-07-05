@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <title>axios - post example</title>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+</head>
+<body class="container">
+<h1>axios.post</h1>
+
+<form role="form" class="form" onsubmit="return false;">
+    <div class="form-group">
+        <label for="data">JSON</label>
+        <textarea id="data" class="form-control" rows="5"></textarea>
+    </div>
+    <button id="post" type="button" class="btn btn-primary">POST</button>
+</form>
+
+<div id="output" class="container"></div>
+
+<script src="/axios.js"></script>
+<script>
+    (function () {
+            var output = document.getElementById('output');
+            document.getElementById('post').onclick = function () {
+                var data = document.getElementById('data').value;
+
+                var fun1 = function () {
+                    return axios.get('http://xiaozhi.com:9093/axios/pagelist?pageSize=1&pageNumber=10&keyWord=', JSON.parse(JSON.stringify(data)))
+                }
+                var fun2 = function () {
+                    return axios.post('/post/server', JSON.parse(JSON.stringify(data)))
+                }
+
+                axios.all([fun1(), fun2()])
+                    .then(axios.spread(function (acct, perms) {
+                        // 两个请求现在都执行完成
+                        console.log(acct);
+                        console.log(perms);
+                    }));
+
+
+                var instance = axios.create();
+                instance.interceptors.request.use(function (config) {
+                    return config;
+                });
+                instance.post('/post/server', JSON.parse(JSON.stringify(data))).then((data) => {
+                    console.log(data);
+                }, (err) => {
+                    console.log(err);
+                });
+
+            };
+        }
+    )();
+</script>
+</body>
+</html>
