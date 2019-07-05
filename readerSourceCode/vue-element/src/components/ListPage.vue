@@ -1,11 +1,12 @@
 <template>
   <div>
-    ListPage
+    <div @click="handleClick">ListPage</div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+  var abc = require('axios/lib/utils')
   export default {
     name: "ListPage",
     data() {
@@ -44,6 +45,11 @@
     methods: {
       handleClick(row) {
         console.log(row);
+        const a = {a: 1, b: 2}
+        const b = {c: 3}
+        const c = abc.merge(a, b);
+        alert(c)
+        console.log(c);
       }
     },
 
