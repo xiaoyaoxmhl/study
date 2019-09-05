@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    <!--按顺序运行 Promise-->
+
+    const f1 = () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('p1 running')
+            resolve(1)
+        }, 1000)
+    })
+
+    const f2 = (lastFuncResult) => new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log(lastFuncResult);
+            console.log('p2 running')
+            resolve(2)
+        }, 1000)
+    })
+
+    const f3 = () => {
+        console.log('f3执行');
+        return 234;
+    }
+
+    const array = [f1, f3, f2, f3]
+
+    const runPromiseInSequence = (array, value) => array.reduce(
+        (promiseChain, currentFunction) => {
+            return promiseChain.then(currentFunction)
+        },
+        Promise.resolve(value)
+    )
+
+    runPromiseInSequence(array, 'init')
+
+</script>
+</body>
+</html>

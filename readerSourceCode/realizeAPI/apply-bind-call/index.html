@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    const fun1 = (...arg) => {
+        console.log(arg);
+    }
+    const fun2 = fun1.bind(null, 1, 2, 3)(4, 5, 6);
+    //bind实现，可以实现2次实参累加
+    console.log(fun2);
+
+    //基本实现，缺失第二次参数
+    Function.prototype.bind = Function.prototype.bind || function (context) {
+        var me = this;
+        var argsArray = Array.prototype.slice.call(arguments);
+        return function () {
+            return me.apply(context, argsArray.slice(1))
+        }
+    }
+
+    //保证了2次参数
+    Function.prototype.bind = Function.prototype.bind || function (context) {
+        var me = this;
+        var args = Array.prototype.slice.call(arguments, 1);
+        return function () {
+            var innerArgs = Array.prototype.slice.call(arguments);
+            var finalArgs = args.concat(innerArgs);
+            return me.apply(context, finalArgs);
+        }
+    }
+
+
+    //直接实现 call/apply
+    Function.prototype.applyFn = function (targetObject, argsArray) {
+        if(typeof argsArray === 'undefined' || argsArray === null) {
+            argsArray = []
+        }
+
+        if(typeof targetObject === 'undefined' || targetObject === null){
+            targetObject = window
+        }
+
+        targetObject = new Object(targetObject)
+
+        const targetFnKey = 'targetFnKey'
+        targetObject[targetFnKey] = this
+
+        const result = targetObject[targetFnKey](...argsArray)
+        delete targetObject[targetFnKey]
+        return result
+    }
+
+</script>
+</body>
+</html>

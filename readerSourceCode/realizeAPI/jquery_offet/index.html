@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li>123</li>
+    <li>123</li>
+    <li>123</li>
+    <li>123</li>
+    <li id="123">123</li>
+</ul>
+<script>
+    <!--熟悉 jQuery 的读者应该对 offset 方法并不陌生，它返回或设置匹配元素相对于文档的偏移（位置）。-->
+    /****************** 递归实现 ***************/
+
+        // 如果节点 node.nodeType 类型不是 Element(1)，则跳出；如果相关节点的 position 属性为 static，则不计入计算，进入下一个节点（其父节点）的递归。如果相关属性的 display 属性为 none，则应该直接返回 0 作为结果。
+    const offset = ele => {
+            let result = {
+                top: 0,
+                left: 0
+            }
+
+            const getOffset = (node, init) => {
+                if (node.nodeType !== 1) {
+                    return
+                }
+
+                position = window.getComputedStyle(node)['position']
+
+                if (typeof(init) === 'undefined' && position === 'static') {
+                    getOffset(node.parentNode)
+                    return
+                }
+
+                result.top = node.offsetTop + result.top - node.scrollTop
+                result.left = node.offsetLeft + result.left - node.scrollLeft
+
+                if (position === 'fixed') {
+                    return
+                }
+
+                getOffset(node.parentNode)
+            }
+
+            // 当前 DOM 节点的 display === 'none' 时, 直接返回 {top: 0, left: 0}
+            if (window.getComputedStyle(ele)['display'] === 'none') {
+                return result
+            }
+
+            let position
+
+            getOffset(ele, true)
+
+            return result
+
+        }
+
+    console.log(offset(document.getElementById('123')));
+
+
+    /********* getBoundingClientRect 方法 *********/
+
+//     需要注意的细节有：
+//
+// node.ownerDocument.documentElement 的用法可能大家比较陌生，ownerDocument 是 DOM 节点的一个属性，它返回当前节点的顶层的 document 对象。ownerDocument 是文档，documentElement 是根节点。事实上，ownerDocument 下含 2 个节点：
+//
+//     <!DocType>
+//
+//     documentElement
+//
+//docElement.clientTop，clientTop 是一个元素顶部边框的宽度，不包括顶部外边距或内边距。除此之外，该方法实现就是简单的几何运算，边界 case 和兼容性处理，也并不难理解。
+    const offset = ele => {
+        let result = {
+            top: 0,
+            left: 0
+        }
+        // 当前为 IE11 以下，直接返回 {top: 0, left: 0}
+        if (!ele.getClientRects().length) {
+            return result
+        }
+
+        // 当前 DOM 节点的 display === 'none' 时，直接返回 {top: 0, left: 0}
+        if (window.getComputedStyle(ele)['display'] === 'none') {
+            return result
+        }
+
+        result = ele.getBoundingClientRect()
+        var docElement = ele.ownerDocument.documentElement
+
+        return {
+            top: result.top + window.pageYOffset - docElement.clientTop,
+            left: result.left + window.pageXOffset - docElement.clientLeft
+        }
+    }
+</script>
+</body>
+</html>

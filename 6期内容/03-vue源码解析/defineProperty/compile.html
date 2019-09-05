@@ -9,16 +9,17 @@
 </head>
 
 <body>
+<!--<p k-text="name"></p>-->
+<!--<p>{{age}}</p>-->
+<!--<p>-->
+    <!--{{doubleAge}}-->
+<!--</p>-->
+<!--<input type="text" k-model="name">-->
+
+<!--<div k-html="html"></div>-->
     <div id="app">
         <p>{{name}}</p>
-        <p k-text="name"></p>
-        <p>{{age}}</p>
-        <p>
-            {{doubleAge}}
-        </p>
-        <input type="text" k-model="name">
         <button @click="changeName">呵呵</button>
-        <div k-html="html"></div>
     </div>
     <script src='compile.js'></script>
     <script src='kvue.js'></script>
@@ -32,9 +33,9 @@
             },
             created() {
                 console.log('开始啦')
-                setTimeout(() => {
-                    this.name = '我是蜗牛'
-                }, 1500)
+                // setTimeout(() => {
+                //     this.name = '我是蜗牛'
+                // }, 1500)
             },
             methods: {
                 changeName() {
@@ -46,7 +47,6 @@
             }
         })
     </script>
-</body>
 </body>
 
 </html>
