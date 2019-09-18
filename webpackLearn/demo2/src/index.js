@@ -1,8 +1,13 @@
 // import _ from 'lodash';
 import './style.css';
 import Icon from './9a1200ca423f14cd2415109a3a75287f.jpg';
-import printMe from './print.js';
-import { cube } from './math.js';
+import {cube} from './math.js';
+
+if (process.env.NODE_ENV !== 'production') {
+    console.log('Looks like we are in development mode!');
+}
+
+var printMe;
 
 function component() {
     var element = document.createElement('div');
@@ -26,6 +31,11 @@ function component() {
     return element;
 }
 
-document.body.appendChild(component());
+import(/* webpackChunkName: "print" */'./print').then(function (data) {
+    printMe = data.default;
+    document.body.appendChild(component());
+    console.log('import complete');
+})
+
 
 console.log(1112);
