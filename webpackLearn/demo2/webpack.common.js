@@ -2,6 +2,7 @@ const path = require('path');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+
 module.exports = {
     entry: {
         app: './src/index.js'
@@ -30,6 +31,15 @@ module.exports = {
                 use: [
                     'file-loader'
                 ]
+            },
+            {
+                test: /\.js$/,
+                loader: path.resolve('./myloader'),
+                exclude: /(mode_modules)/,
+                options: {
+                    path: 'ORIGINAL_PATH',
+                    replacePath: 'REPLACE_PATH'
+                }
             }
         ]
     }
